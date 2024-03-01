@@ -3,9 +3,9 @@ module aws-cloudwatch-uptime
 go 1.21
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.24.1
+	github.com/aws/aws-sdk-go-v2 v1.25.2
 	github.com/aws/aws-sdk-go-v2/config v1.26.4
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.14.11
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.32.2
 	github.com/kardianos/service v1.2.2
 	github.com/shirou/gopsutil v3.21.11+incompatible
@@ -23,7 +23,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.18.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.21.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.26.7 // indirect
-	github.com/aws/smithy-go v1.19.0 // indirect
+	github.com/aws/smithy-go v1.20.1 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.13 // indirect
