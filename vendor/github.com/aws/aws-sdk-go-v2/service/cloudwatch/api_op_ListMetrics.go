@@ -80,7 +80,7 @@ type ListMetricsInput struct {
 	//
 	// The results that are returned are an approximation of the value you specify.
 	// There is a low probability that the returned results include metrics with last
-	// published data as much as 40 minutes more than the specified time interval.
+	// published data as much as 50 minutes more than the specified time interval.
 	RecentlyActive types.RecentlyActive
 
 	noSmithyDocumentSerde
@@ -170,6 +170,9 @@ func (c *Client) addOperationListMetricsMiddlewares(stack *middleware.Stack, opt
 		return err
 	}
 	if err = addUserAgentRetryMode(stack, options); err != nil {
+		return err
+	}
+	if err = addCredentialSource(stack, options); err != nil {
 		return err
 	}
 	if err = addOpListMetricsValidationMiddleware(stack); err != nil {
