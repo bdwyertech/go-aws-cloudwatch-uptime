@@ -296,6 +296,51 @@ type DimensionFilter struct {
 	noSmithyDocumentSerde
 }
 
+// An entity associated with metrics, to allow for finding related telemetry. An
+// entity is typically a resource or service within your system. For example,
+// metrics from an Amazon EC2 instance could be associated with that instance as
+// the entity. Similarly, metrics from a service that you own could be associated
+// with that service as the entity.
+type Entity struct {
+
+	// Additional attributes of the entity that are not used to specify the identity
+	// of the entity. A list of key-value pairs.
+	//
+	// For details about how to use the attributes, see [How to add related information to telemetry] in the CloudWatch User Guide.
+	//
+	// [How to add related information to telemetry]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/adding-your-own-related-telemetry.html
+	Attributes map[string]string
+
+	// The attributes of the entity which identify the specific entity, as a list of
+	// key-value pairs. Entities with the same KeyAttributes are considered to be the
+	// same entity. For an entity to be valid, the KeyAttributes must exist and be
+	// formatted correctly.
+	//
+	// There are five allowed attributes (key names): Type , ResourceType , Identifier
+	// , Name , and Environment .
+	//
+	// For details about how to use the key attributes to specify an entity, see [How to add related information to telemetry] in
+	// the CloudWatch User Guide.
+	//
+	// [How to add related information to telemetry]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/adding-your-own-related-telemetry.html
+	KeyAttributes map[string]string
+
+	noSmithyDocumentSerde
+}
+
+// A set of metrics that are associated with an entity, such as a specific service
+// or resource. Contains the entity and the list of metric data associated with it.
+type EntityMetricData struct {
+
+	// The entity associated with the metrics.
+	Entity *Entity
+
+	// The metric data.
+	MetricData []MetricDatum
+
+	noSmithyDocumentSerde
+}
+
 // This structure contains the definition for a Contributor Insights rule. For
 // more information about this rule, see[Using Constributor Insights to analyze high-cardinality data] in the Amazon CloudWatch User Guide.
 //
@@ -328,6 +373,13 @@ type InsightRule struct {
 	//
 	// This member is required.
 	State *string
+
+	// Displays whether the rule is evaluated on the transformed versions of logs, for
+	// log groups that have [Log transformation]enabled. If this is false , log events are evaluated before
+	// they are transformed.
+	//
+	// [Log transformation]: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatch-Logs-Transformation.html
+	ApplyOnTransformedLogs *bool
 
 	//  An optional built-in rule that Amazon Web Services manages.
 	ManagedRule *bool
@@ -638,10 +690,8 @@ type MetricAlarm struct {
 
 	// An array of MetricDataQuery structures, used in an alarm based on a metric math
 	// expression. Each structure either retrieves a metric or performs a math
-	// expression.
-	//
-	// One item in the Metrics array is the math expression that the alarm watches.
-	// This expression by designated by having ReturnData set to true.
+	// expression. One item in the Metrics array is the math expression that the alarm
+	// watches. This expression by designated by having ReturnData set to true.
 	Metrics []MetricDataQuery
 
 	// The namespace of the metric associated with the alarm.
@@ -793,8 +843,8 @@ type MetricDataQuery struct {
 	// The granularity, in seconds, of the returned data points. For metrics with
 	// regular resolution, a period can be as short as one minute (60 seconds) and must
 	// be a multiple of 60. For high-resolution metrics that are collected at intervals
-	// of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of
-	// 60. High-resolution metrics are those metrics stored by a PutMetricData
+	// of less than one minute, the period can be 1, 5, 10, 20, 30, 60, or any multiple
+	// of 60. High-resolution metrics are those metrics stored by a PutMetricData
 	// operation that includes a StorageResolution of 1 second .
 	Period *int32
 
@@ -946,8 +996,8 @@ type MetricStat struct {
 	// The granularity, in seconds, of the returned data points. For metrics with
 	// regular resolution, a period can be as short as one minute (60 seconds) and must
 	// be a multiple of 60. For high-resolution metrics that are collected at intervals
-	// of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of
-	// 60. High-resolution metrics are those metrics stored by a PutMetricData call
+	// of less than one minute, the period can be 1, 5, 10, 20, 30, 60, or any multiple
+	// of 60. High-resolution metrics are those metrics stored by a PutMetricData call
 	// that includes a StorageResolution of 1 second.
 	//
 	// If the StartTime parameter specifies a time stamp that is greater than 3 hours

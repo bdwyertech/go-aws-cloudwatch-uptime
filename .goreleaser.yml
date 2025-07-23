@@ -1,6 +1,7 @@
 # Encoding: UTF-8
 
 project_name: aws-cloudwatch-uptime
+version: 2
 
 before:
   hooks:
