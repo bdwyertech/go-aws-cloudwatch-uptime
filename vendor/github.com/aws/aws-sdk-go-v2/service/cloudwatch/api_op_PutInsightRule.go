@@ -49,7 +49,7 @@ type PutInsightRuleInput struct {
 	// This member is required.
 	RuleName *string
 
-	// Specify true to have this rule evalute log events after they have been
+	// Specify true to have this rule evaluate log events after they have been
 	// transformed by [Log transformation]. If you specify true , then the log events in log groups that
 	// have transformers will be evaluated by Contributor Insights after being
 	// transformed. Log groups that don't have transformers will still have their
@@ -182,6 +182,36 @@ func (c *Client) addOperationPutInsightRuleMiddlewares(stack *middleware.Stack, 
 		return err
 	}
 	if err = addDisableHTTPSMiddleware(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptBeforeRetryLoop(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptAttempt(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptExecution(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptBeforeSerialization(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptAfterSerialization(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptBeforeSigning(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptAfterSigning(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptTransmit(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptBeforeDeserialization(stack, options); err != nil {
+		return err
+	}
+	if err = addInterceptAfterDeserialization(stack, options); err != nil {
 		return err
 	}
 	if err = addSpanInitializeStart(stack); err != nil {
