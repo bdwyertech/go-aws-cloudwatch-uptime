@@ -49,7 +49,7 @@ type PutInsightRuleInput struct {
 	// This member is required.
 	RuleName *string
 
-	// Specify true to have this rule evalute log events after they have been
+	// Specify true to have this rule evaluate log events after they have been
 	// transformed by [Log transformation]. If you specify true , then the log events in log groups that
 	// have transformers will be evaluated by Contributor Insights after being
 	// transformed. Log groups that don't have transformers will still have their
@@ -184,16 +184,13 @@ func (c *Client) addOperationPutInsightRuleMiddlewares(stack *middleware.Stack, 
 	if err = addDisableHTTPSMiddleware(stack, options); err != nil {
 		return err
 	}
-	if err = addSpanInitializeStart(stack); err != nil {
+	if err = addInterceptBeforeRetryLoop(stack, options); err != nil {
 		return err
 	}
-	if err = addSpanInitializeEnd(stack); err != nil {
+	if err = addInterceptAttempt(stack, options); err != nil {
 		return err
 	}
-	if err = addSpanBuildRequestStart(stack); err != nil {
-		return err
-	}
-	if err = addSpanBuildRequestEnd(stack); err != nil {
+	if err = addInterceptors(stack, options); err != nil {
 		return err
 	}
 	return nil
